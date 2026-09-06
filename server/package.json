@@ -1,7 +1,7 @@
 {
   "name": "presight-server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server.js",
   "license": "MIT",
   "type": "module",
   "dependencies": {
@@ -17,6 +17,8 @@
     "typescript": "^7.0.2"
   },
   "scripts": {
+    "build": "tsc",
+    "start": "node --env-file-if-exists=.env dist/server.js",
     "db:new": "dbmate new",
     "db:migrate": "dbmate up",
     "db:rollback": "dbmate rollback",
