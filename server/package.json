@@ -8,6 +8,15 @@
   },
   "devDependencies": {
     "@types/express": "~5.0.1",
-    "@types/node-fetch": "~2.6.12"
+    "@types/node": "~24.13.0",
+    "@types/node-fetch": "~2.6.12",
+    "dbmate": "^2.35.1",
+    "typescript": "^7.0.2"
+  },
+  "scripts": {
+    "db:new": "dbmate new",
+    "db:migrate": "dbmate up",
+    "db:rollback": "dbmate rollback",
+    "db:status": "dbmate status"
   }
 }

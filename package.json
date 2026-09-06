@@ -5,9 +5,11 @@
   "author": "",
   "license": "MIT",
   "workspaces": [
+    "avatar-generator",
     "client",
     "server"
   ],
+  "private": true,
   "scripts": {
     "start": "lerna run start"
   },
