@@ -1,3 +1,5 @@
+import type {SortBy} from "./db.ts";
+
 export type User = {
     id: number;
     avatar: string;
@@ -7,6 +9,23 @@ export type User = {
     nationality: string;
     hobbies: string[];
 };
+
+export type UserQuery = {
+    page: number;
+    limit: number;
+    sortBy?: {
+        firstName?: SortBy;
+        lastName?: SortBy;
+        age?: SortBy;
+        nationality?: SortBy;
+    }
+    firstName?: string;
+    lastName?: string;
+    nationalities?: string[];
+    hobbies?: string[];
+};
+
+export type UserRow = Omit<User, "hobbies"> & { hobbies: string | null };
 
 export type PaginatedUsers = {
     users: User[];
