@@ -6,5 +6,6 @@ const router = Router();
 
 router.get("/", userController.getUsers);
 router.post("/query", userController.queryUsers);
+router.post("/aggregations", userController.getAggregations);
 
 export default router;

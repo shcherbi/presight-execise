@@ -1,4 +1,4 @@
-import type {UserQuery} from "../models/user.ts";
+import type {UserFilter, UserQuery} from "../models/user.ts";
 import {type BindValue, type Filter, SortBy} from "../models/db.ts";
 
 
@@ -14,15 +14,12 @@ function direction(sortBy: SortBy | undefined): string {
     return sortBy === SortBy.DESC ? "DESC" : "ASC";
 }
 
-function buildUserFilter(userQuery: UserQuery): Filter {
+function buildUserFilter(userQuery: UserFilter): Filter {
     const filterArray: string[] = [];
     const params: BindValue[] = [];
 
     if (userQuery.name) {
-        filterArray.push(`
-        (u.first_name || '' || u.last_name) 
-            LIKE ? ESCAPE '\' COLLATE NOCASE
-        `);
+        filterArray.push(`(u.first_name || ' ' || u.last_name) LIKE ? ESCAPE '\\' COLLATE NOCASE`);
         params.push(`%${escapeLike(userQuery.name.trim())}%`);
     }
 
@@ -33,13 +30,12 @@ function buildUserFilter(userQuery: UserQuery): Filter {
 
     if (userQuery.hobbies && userQuery.hobbies.length !== 0) {
         filterArray.push(`
-            EXISTS (SELECT 1
-                    FROM user_hobbies uh
-                             JOIN hobbies h ON h.id = uh.hobby_id
-                    WHERE uh.user_id = u.id
-                      AND h.name IN (${placeholders(userQuery.hobbies)}))
-                    GROUP BY uh.user_id
-                    HAVING COUNT (DISTINCT h.name) = ?
+            u.id IN (SELECT fuh.user_id
+                     FROM user_hobbies fuh 
+                        JOIN hobbies fh ON fh.id = fuh.hobby_id
+                     WHERE fh.name IN (${placeholders(userQuery.hobbies)})
+                     GROUP BY fuh.user_id
+                     HAVING COUNT(DISTINCT fh.name) = ?)
         `);
         params.push(...userQuery.hobbies, userQuery.hobbies.length);
     }

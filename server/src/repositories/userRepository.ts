@@ -1,8 +1,10 @@
 import {db} from "../config/database.ts";
 import {type BindValue} from "../models/db.ts";
-import type {User, UserQuery, UserRow} from "../models/user.ts";
+import type {ValueCount, User, UserFilter, UserQuery, UserRow} from "../models/user.ts";
 import {toUser} from "../mapper/user.ts";
 import userSpec from "./userSpec.ts";
+
+const TOP_FACETS = 20;
 
 const USER_COLUMNS = `
     u.id,
@@ -71,4 +73,36 @@ function queryUsers(userQuery: UserQuery, limit: number, offset: number): User[]
     return statement.all(...params, limit, offset).map(toUser);
 }
 
-export default {countUsers, findUsers, countQueriedUsers, queryUsers};
+function topHobbies(userFilter: UserFilter): ValueCount[] {
+    const {where, params} = userSpec.buildUserFilter(userFilter);
+
+    const statement = db.prepare<BindValue[], ValueCount>(`
+        SELECT h.name AS value, COUNT(*) AS count
+        FROM users u
+                 JOIN user_hobbies uh ON uh.user_id = u.id
+                 JOIN hobbies h ON h.id = uh.hobby_id
+            ${where}
+        GROUP BY h.name
+        ORDER BY count DESC, h.name ASC
+        LIMIT ${TOP_FACETS}
+    `);
+
+    return statement.all(...params);
+}
+
+function topNationalities(userFilter: UserFilter): ValueCount[] {
+    const {where, params} = userSpec.buildUserFilter(userFilter);
+
+    const statement = db.prepare<BindValue[], ValueCount>(`
+        SELECT u.nationality AS value, COUNT(*) AS count
+        FROM users u
+            ${where}
+        GROUP BY u.nationality
+        ORDER BY count DESC, u.nationality ASC
+        LIMIT ${TOP_FACETS}
+    `);
+
+    return statement.all(...params);
+}
+
+export default {countUsers, findUsers, countQueriedUsers, queryUsers, topHobbies, topNationalities};

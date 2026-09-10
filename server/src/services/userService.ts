@@ -1,4 +1,4 @@
-import type {PaginatedUsers, User, UserQuery} from "../models/user.ts";
+import type {PaginatedUsers, User, UserAggregation, UserFilter, UserQuery} from "../models/user.ts";
 import repository from "../repositories/userRepository.ts";
 import {getPaginatedUsersDto} from "../mapper/user.ts";
 
@@ -19,7 +19,15 @@ function queryUsers(userQuery: UserQuery): PaginatedUsers {
     return getPaginatedUsersDto(users, userQuery.page, userQuery.limit, total);
 }
 
+function getAggregations(userFilter: UserFilter): UserAggregation {
+    return {
+        hobbies: repository.topHobbies(userFilter),
+        nationalities: repository.topNationalities(userFilter),
+    };
+}
+
 export default {
     getUsers,
-    queryUsers
+    queryUsers,
+    getAggregations
 }

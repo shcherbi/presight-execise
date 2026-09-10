@@ -1,7 +1,7 @@
 import type {Request, Response} from "express";
 
 import userService from "../services/userService.ts";
-import type {UserQuery} from "../models/user.ts";
+import type {UserFilter, UserQuery} from "../models/user.ts";
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 20;
@@ -58,7 +58,12 @@ function queryUsers(req: Request<{}, {}, UserQuery>, res: Response): void {
     res.json(userService.queryUsers(userQuery));
 }
 
+function getAggregations(req: Request<{}, {}, UserFilter>, res: Response): void {
+    res.json(userService.getAggregations(req.body ?? {}));
+}
+
 export default {
     getUsers,
-    queryUsers
+    queryUsers,
+    getAggregations
 }

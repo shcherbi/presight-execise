@@ -10,7 +10,13 @@ export type User = {
     hobbies: string[];
 };
 
-export type UserQuery = {
+export type UserFilter = {
+    name?: string;
+    nationalities?: string[];
+    hobbies?: string[];
+};
+
+export type UserQuery = UserFilter & {
     page: number;
     limit: number;
     sortBy?: {
@@ -19,9 +25,16 @@ export type UserQuery = {
         age?: SortBy;
         nationality?: SortBy;
     }
-    name?: string;
-    nationalities?: string[];
-    hobbies?: string[];
+};
+
+export type ValueCount = {
+    value: string;
+    count: number;
+};
+
+export type UserAggregation = {
+    hobbies: ValueCount[];
+    nationalities: ValueCount[];
 };
 
 export type UserRow = Omit<User, "hobbies"> & { hobbies: string | null };
