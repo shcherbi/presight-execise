@@ -1,0 +1,84 @@
+.filter-panel {
+    width: 25%;
+    height: fit-content;
+
+    box-shadow: rgb(176, 165, 143) 4px 4px;
+    background: rgb(238, 230, 215);
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(143, 134, 118);
+    border-image: none;
+}
+
+.filter-panel-title {
+    justify-content: space-between;
+    justify-items: center;
+    align-items: center;
+    display: flex;
+    gap: 12px;
+
+    color: rgb(255, 248, 233);
+    background: rgb(24, 52, 65);
+    border-bottom: 3px solid rgb(155, 48, 44);
+    padding: 14px 15px;
+}
+
+.filter-panel-title button {
+    color: rgb(218, 207, 183);
+    background: 0 0;
+    border-width: 0;
+    border-style: none;
+    border-color: currentcolor;
+    border-image: none;
+    font: 700 11px / 1 "Courier New", monospace;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.filter-panel-title h2 {
+    font-size: 17px;
+    font-weight: 500;
+    margin: 0px;
+}
+
+.filter-section {
+    border-bottom: 1px dashed rgb(154, 145, 127);
+    padding: 17px 15px;
+}
+
+.filter-section:last-child {
+    border-bottom: 0;
+}
+
+.filter-heading {
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 11px;
+    display: flex;
+}
+
+.filter-checkbox {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+}
+
+.filter-checkbox strong {
+    text-align: center;
+    color: rgb(95, 89, 79);
+    min-width: 28px;
+    background: rgb(221, 211, 192);
+    padding: 3px 5px;
+    font: 700 11px / 1 "Courier New", monospace;
+}
+
+.filter-heading h3 {
+    font-size: 15px;
+    margin: 0;
+}
+
+.filter-heading span {
+    color: rgb(118, 110, 96);
+    letter-spacing: 0.12em;
+    font: 700 10px / 1 "Courier New", monospace;
+}

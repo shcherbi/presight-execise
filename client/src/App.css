@@ -1,0 +1,13 @@
+.wrapper-container {
+    width: 100%;
+    min-height: 100dvh;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+
+    min-height: 100dvh;
+    padding: 14px 20px;
+}
