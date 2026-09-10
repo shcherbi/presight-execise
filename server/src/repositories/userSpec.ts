@@ -6,6 +6,10 @@ function placeholders(values: unknown[]): string {
     return values.map(() => "?").join(", ");
 }
 
+function escapeLike(value: string): string {
+    return value.replace(/[\\%_]/g, "\\$&");
+}
+
 function direction(sortBy: SortBy | undefined): string {
     return sortBy === SortBy.DESC ? "DESC" : "ASC";
 }
@@ -14,14 +18,12 @@ function buildUserFilter(userQuery: UserQuery): Filter {
     const filterArray: string[] = [];
     const params: BindValue[] = [];
 
-    if (userQuery.firstName) {
-        filterArray.push("u.first_name LIKE ?");
-        params.push(`%${userQuery.firstName.trim()}%`);
-    }
-
-    if (userQuery.lastName) {
-        filterArray.push("u.last_name LIKE ?");
-        params.push(`%${userQuery.lastName.trim()}%`);
+    if (userQuery.name) {
+        filterArray.push(`
+        (u.first_name || '' || u.last_name) 
+            LIKE ? ESCAPE '\' COLLATE NOCASE
+        `);
+        params.push(`%${escapeLike(userQuery.name.trim())}%`);
     }
 
     if (userQuery.nationalities && userQuery.nationalities.length !== 0) {
@@ -36,8 +38,10 @@ function buildUserFilter(userQuery: UserQuery): Filter {
                              JOIN hobbies h ON h.id = uh.hobby_id
                     WHERE uh.user_id = u.id
                       AND h.name IN (${placeholders(userQuery.hobbies)}))
+                    GROUP BY uh.user_id
+                    HAVING COUNT (DISTINCT h.name) = ?
         `);
-        params.push(...userQuery.hobbies);
+        params.push(...userQuery.hobbies, userQuery.hobbies.length);
     }
 
     return {

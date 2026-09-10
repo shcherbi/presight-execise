@@ -19,8 +19,7 @@ export type UserQuery = {
         age?: SortBy;
         nationality?: SortBy;
     }
-    firstName?: string;
-    lastName?: string;
+    name?: string;
     nationalities?: string[];
     hobbies?: string[];
 };

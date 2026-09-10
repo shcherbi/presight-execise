@@ -9,13 +9,17 @@ const server = app.listen(config.port, () => {
 
 //Graceful shutdown
 function shutDown(): void {
-    server.close((error: any) => {
+    server.close((error?: Error) => {
         db.close();
 
-        if (error !== undefined) {
-            throw error;
+        if (error) {
+            console.error("Error during shutdown:", error);
         }
+
+        process.exit(error ? 1 : 0);
     });
+
+    server.closeAllConnections();
 }
 
 process.once("SIGINT", shutDown);
