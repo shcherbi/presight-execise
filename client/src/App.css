@@ -8,6 +8,7 @@
     flex-direction: row;
     gap: 50px;
 
+    width: 100%;
     min-height: 100dvh;
     padding: 14px 20px;
 }

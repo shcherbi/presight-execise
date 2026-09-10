@@ -2,7 +2,7 @@ import "./FilterPanel.css"
 
 function FilterPanel() {
     return (
-        <aside className={"filter-panel"}>
+        <aside className={"filter-panel-container"}>
             <div className={"filter-panel-title"}>
             <h2>
                 Refine Records

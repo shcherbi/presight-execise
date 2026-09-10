@@ -2,6 +2,7 @@ import './App.css'
 import Header from "./components/Header/Header.tsx";
 import SearchBar from "./components/SearchBar/SearchBar.tsx";
 import FilterPanel from "./components/FilterPanel/FilterPanel.tsx";
+import UserList from "./components/UserList/UserList.tsx";
 
 function App() {
     return (
@@ -15,22 +16,7 @@ function App() {
           </div>*/}
             <div className={"main-container"}>
                 <FilterPanel/>
-                <main>
-                    <div>
-                        <h2> Verified Operatives</h2>
-                        <span>Matching case files</span>
-                        <span>240 records found</span>
-                    </div>
-                    <div>
-                        <div>
-                            <svg></svg>
-                            <h1>John Doe</h1>
-                            <span>Polish</span>
-                            <span>46 old</span>
-                            <label>Diving</label>
-                        </div>
-                    </div>
-                </main>
+                <UserList/>
             </div>
         </div>
     )
