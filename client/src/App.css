@@ -6,7 +6,8 @@
 .main-container {
     display: flex;
     flex-direction: row;
-    gap: 50px;
+    justify-content: space-around;
+    gap: 220px;
 
     width: 100%;
     min-height: 100dvh;
