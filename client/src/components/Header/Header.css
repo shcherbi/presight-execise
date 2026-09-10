@@ -1,0 +1,25 @@
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 20px;
+
+    color: rgb(255, 248, 233);
+    background: rgb(24, 52, 65);
+    border-bottom: 5px solid rgb(155, 48, 44);
+}
+
+.header-title {
+    letter-spacing: 0.025em;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.header-subtitle {
+    letter-spacing: 0.16em;
+    font: 700 11px / 1.2 "Courier New", monospace;
+}
+
+.header-editions {
+    letter-spacing: 0.16em;
+    font: 700 11px / 1.2 "Courier New", monospace;
+}
