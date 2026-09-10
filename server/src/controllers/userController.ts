@@ -1,65 +1,48 @@
 import type {Request, Response} from "express";
+import {z} from "zod";
 
 import userService from "../services/userService.ts";
-import type {UserFilter, UserQuery} from "../models/user.ts";
+import {paginationSchema, userFilterSchema, userQuerySchema} from "../models/user.ts";
 
-const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 20;
+function parse<T>(schema: z.ZodType<T>, input: unknown, res: Response): T | undefined {
+    const result = schema.safeParse(input);
 
-function parsePositiveIntegerForRequestQuery(value: Request["query"][string] | undefined, defaultValue: number): number | undefined {
-    if (value === undefined) {
-        return defaultValue;
-    }
-
-    if (typeof value !== "string" || !/^[1-9]\d*$/.test(value)) {
+    if (!result.success) {
+        res.status(400).json({
+            error: "Invalid request.",
+            issues: z.treeifyError(result.error),
+        });
         return undefined;
     }
 
-    return Number(value);
-}
-
-function parsePositiveIntegerForUserQuery(value:number | undefined, defaultValue: number): number | undefined {
-    if (value === undefined) {
-        return defaultValue;
-    }
-
-    return value;
+    return result.data;
 }
 
 function getUsers(req: Request, res: Response): void {
-    const page = parsePositiveIntegerForRequestQuery(req.query.page, DEFAULT_PAGE);
-    const limit = parsePositiveIntegerForRequestQuery(req.query.limit, DEFAULT_LIMIT);
-
-    if (page === undefined || limit === undefined) {
-        res.status(400).json({
-            error: `"page" must be a positive integer and "limit" must be a positive integer.`,
-        });
+    const pagination = parse(paginationSchema, req.query, res);
+    if (!pagination) {
         return;
     }
 
-    res.json(userService.getUsers(page, limit));
+    res.json(userService.getUsers(pagination.page, pagination.limit));
 }
 
-function queryUsers(req: Request<{}, {}, UserQuery>, res: Response): void {
-    const userQuery: UserQuery = req.body ?? {} as UserQuery;
-    const page = parsePositiveIntegerForUserQuery(userQuery.page, DEFAULT_PAGE);
-    const limit = parsePositiveIntegerForUserQuery(userQuery.limit, DEFAULT_LIMIT);
-
-    if (page === undefined || limit === undefined) {
-        res.status(400).json({
-            error: `"page" must be a positive integer and "limit" must be a positive integer.`,
-        });
+function queryUsers(req: Request, res: Response): void {
+    const userQuery = parse(userQuerySchema, req.body ?? {}, res);
+    if (!userQuery) {
         return;
     }
-
-    userQuery.page = page;
-    userQuery.limit = limit;
 
     res.json(userService.queryUsers(userQuery));
 }
 
-function getAggregations(req: Request<{}, {}, UserFilter>, res: Response): void {
-    res.json(userService.getAggregations(req.body ?? {}));
+function getAggregations(req: Request, res: Response): void {
+    const userFilter = parse(userFilterSchema, req.body ?? {}, res);
+    if (!userFilter) {
+        return;
+    }
+
+    res.json(userService.getAggregations(userFilter));
 }
 
 export default {

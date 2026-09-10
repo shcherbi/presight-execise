@@ -6,10 +6,13 @@
   "type": "module",
   "dependencies": {
     "better-sqlite3": "^13.0.3",
-    "express": "~5.1.0"
+    "cors": "^2.8.6",
+    "express": "~5.1.0",
+    "zod": "^4.6.1"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^9.6.0",
+    "@types/cors": "^2.8.19",
     "@types/express": "~5.0.1",
     "@types/node": "~24.13.0",
     "@types/node-fetch": "~2.6.12",
