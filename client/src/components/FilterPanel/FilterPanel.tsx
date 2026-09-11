@@ -17,15 +17,11 @@ function FilterPanel() {
                 </div>
                 <div>
                     <div className="filter-checkbox">
-                        <div>
-                            <input type="checkbox" title="Diving"/> Diving
-                        </div>
+                        <label><input type="checkbox" title="Diving"/> Diving</label>
                         <strong>20</strong>
                     </div>
                     <div className="filter-checkbox">
-                        <div>
-                            <input type="checkbox" title="Diving"/> Boxing
-                        </div>
+                        <label><input type="checkbox" title="Diving"/> Boxing</label>
                         <strong>10</strong>
                     </div>
                 </div>
@@ -37,15 +33,11 @@ function FilterPanel() {
                 </div>
                 <div>
                     <div className="filter-checkbox">
-                        <div>
-                            <input type="checkbox" title="English"/> English
-                        </div>
+                        <label><input type="checkbox" title="English"/> English</label>
                         <strong>20</strong>
                     </div>
                     <div className="filter-checkbox">
-                        <div>
-                            <input type="checkbox" title="Indus"/> Indus
-                        </div>
+                        <label><input type="checkbox" title="Indus"/> Indus</label>
                         <strong>10</strong>
                     </div>
                 </div>

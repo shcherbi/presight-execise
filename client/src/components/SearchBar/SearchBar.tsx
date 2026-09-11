@@ -4,17 +4,17 @@ function SearchBar() {
     return (
         <section className="search-bar-container">
             <div className="search">
-                <input type="text" placeholder="Search first or last name..."/>
+                <input type="search" placeholder="Search first or last name..."/>
             </div>
             <div className="sort-controls">
                 <span>SORT BY</span>
-                <select>
-                    <option>First name</option>
-                    <option>Last name</option>
-                    <option>Age</option>
-                    <option>Nationality</option>
+                <select id="sortBy">
+                    <option value="firstName">First name</option>
+                    <option value="lastName">Last name</option>
+                    <option value="age">Age</option>
+                    <option value="nationality">Nationality</option>
                 </select>
-                <button>ASC/DESC</button>
+                <button>↑ A–Z</button>
             </div>
         </section>
     );

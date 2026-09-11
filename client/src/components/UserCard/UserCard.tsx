@@ -3,7 +3,7 @@ import "./UserCard.css"
 function UserCard() {
     return (
         <article className="user-card">
-            <svg className="avatar"></svg>
+            <img className="avatar"  alt="" loading="lazy" width={92} height={106} />
             <div className="user-details">
                 <h3>John Doe</h3>
                 <div className="user-meta">

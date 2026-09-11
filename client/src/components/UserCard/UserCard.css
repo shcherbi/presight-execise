@@ -6,10 +6,7 @@
 
     box-shadow: rgb(179, 168, 145) 3px 3px;
     background: rgb(248, 242, 230);
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgb(143, 134, 118);
-    border-image: none;
+    border: 1px solid var(--rule);
 
     padding: 26px 28px;
     overflow: hidden;
@@ -20,10 +17,7 @@
     height: 106px;
 
     box-shadow: rgb(165, 154, 134) 2px 2px;
-    border-width: 6px;
-    border-style: solid;
-    border-color: rgb(232, 222, 204);
-    border-image: none;
+    border: 6px solid rgb(232, 222, 204);
     outline: rgb(136, 126, 110) solid 1px;
 }
 
@@ -61,10 +55,7 @@
     font: 11px / 1 "Courier New", monospace;
 
     background: rgb(232, 222, 204);
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgb(165, 154, 135);
-    border-image: none;
+    border: 1px solid rgb(165, 154, 135);
 
     padding: 5px 8px 4px;
 }

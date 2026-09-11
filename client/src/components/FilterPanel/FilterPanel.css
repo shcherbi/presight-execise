@@ -4,10 +4,7 @@
 
     box-shadow: rgb(176, 165, 143) 4px 4px;
     background: rgb(238, 230, 215);
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgb(143, 134, 118);
-    border-image: none;
+    border: 1px solid var(--rule);
 }
 
 .filter-panel-title {
@@ -25,11 +22,8 @@
 
 .filter-panel-title button {
     color: rgb(218, 207, 183);
-    background: 0 0;
-    border-width: 0;
-    border-style: none;
-    border-color: currentcolor;
-    border-image: none;
+    background: transparent;
+    border: 0;
     font: 700 11px / 1 "Courier New", monospace;
     text-decoration: underline;
     cursor: pointer;
