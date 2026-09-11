@@ -1,6 +1,6 @@
 .filter-panel-container {
-    width: 25%;
     height: fit-content;
+    flex: 0.5;
 
     box-shadow: rgb(176, 165, 143) 4px 4px;
     background: rgb(238, 230, 215);

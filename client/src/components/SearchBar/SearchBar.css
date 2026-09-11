@@ -1,5 +1,7 @@
 .search-bar-container {
     display: flex;
+    justify-content: center;
+
     align-items: center;
     box-shadow: rgb(255, 248, 229) 0px -1px inset;
     background: rgb(216, 206, 186);
@@ -23,7 +25,6 @@
 
 .sort-controls {
     align-items: center;
-    margin-left: auto;
     display: flex;
     gap: 8px;
 }
