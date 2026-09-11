@@ -22,5 +22,6 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
+  "noUncheckedIndexedAccess": true,
   "include": ["src"]
 }

@@ -2,11 +2,11 @@ import "./SearchBar.css"
 
 function SearchBar() {
     return (
-        <section className={"search-bar-container"}>
-            <div className={"search"}>
-                <input type={"text"} placeholder={"Search first or last name..."}/>
+        <section className="search-bar-container">
+            <div className="search">
+                <input type="text" placeholder="Search first or last name..."/>
             </div>
-            <div className={"sort-controls"}>
+            <div className="sort-controls">
                 <span>SORT BY</span>
                 <select>
                     <option>First name</option>

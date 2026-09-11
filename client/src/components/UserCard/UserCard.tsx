@@ -2,8 +2,8 @@ import "./UserCard.css"
 
 function UserCard() {
     return (
-        <article className={"user-card"}>
-            <svg className={"avatar"}></svg>
+        <article className="user-card">
+            <svg className="avatar"></svg>
             <div className="user-details">
                 <h3>John Doe</h3>
                 <div className="user-meta">

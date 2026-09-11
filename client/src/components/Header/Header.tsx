@@ -2,12 +2,12 @@ import "./Header.css"
 
 function Header() {
     return (
-        <header className={"header-container"}>
+        <header className="header-container">
             <div>
-                <span className={"header-subtitle"}>Private & Confidential</span>
-                <h1 className={"header-title"}>The Detective Registry</h1>
+                <span className="header-subtitle">Private & Confidential</span>
+                <h1 className="header-title">The Detective Registry</h1>
             </div>
-            <div className={"header-editions"}>
+            <div className="header-editions">
                 <span>EST. 1984</span>
             </div>
         </header>

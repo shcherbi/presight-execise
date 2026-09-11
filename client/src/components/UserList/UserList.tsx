@@ -3,7 +3,7 @@ import UserCard from "../UserCard/UserCard.tsx";
 
 function UserList() {
     return (
-        <main className={"user-container"}>
+        <main className="user-container">
             <div className="users-heading">
                 <div>
                     <span className="eyebrow">Verified operatives</span>
@@ -11,8 +11,8 @@ function UserList() {
                 </div>
                 <p><strong>240</strong> records found</p>
             </div>
-            <div className={"users-list"}>
-                <div className={"user-cards"}>
+            <div className="users-list">
+                <div className="user-cards">
                     <UserCard/>
                 </div>
             </div>
