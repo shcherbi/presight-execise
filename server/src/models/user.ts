@@ -51,7 +51,7 @@ export type ValueCount = {
     count: number;
 };
 
-export type UserAggregation = {
+export type FilterOptions = {
     hobbies: ValueCount[];
     nationalities: ValueCount[];
 };

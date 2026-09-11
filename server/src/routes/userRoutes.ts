@@ -6,6 +6,6 @@ const router = Router();
 
 router.get("/", userController.getUsers);
 router.post("/query", userController.queryUsers);
-router.post("/aggregations", userController.getAggregations);
+router.post("/filter-options", userController.getFilterOptions);
 
 export default router;

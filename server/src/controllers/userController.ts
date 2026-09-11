@@ -36,17 +36,17 @@ function queryUsers(req: Request, res: Response): void {
     res.json(userService.queryUsers(userQuery));
 }
 
-function getAggregations(req: Request, res: Response): void {
+function getFilterOptions(req: Request, res: Response): void {
     const userFilter = parse(userFilterSchema, req.body ?? {}, res);
     if (!userFilter) {
         return;
     }
 
-    res.json(userService.getAggregations(userFilter));
+    res.json(userService.getFilterOptions(userFilter));
 }
 
 export default {
     getUsers,
     queryUsers,
-    getAggregations
+    getFilterOptions
 }

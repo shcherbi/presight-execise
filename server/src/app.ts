@@ -9,7 +9,7 @@ const app: Express = express();
 app.use(cors());
 app.use(express.json());
 app.use("/avatars", express.static(resolve(import.meta.dirname, "../db/avatars")));
-app.use("/users", userRoutes);
+app.use("/api/users", userRoutes);
 
 
 const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
