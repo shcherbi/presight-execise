@@ -15,10 +15,10 @@ async function post<T>(path: string, body: unknown): Promise<T> {
     return res.json();
 }
 
-export const getUsersPaginated = (userQuery: UserQuery) =>
+export const getUsersPaginated = async (userQuery: UserQuery) =>
     post<UserQuery>("/api/users/query", userQuery);
 
 
-export const getFilterOptions = (userFilter: UserFilter) =>
+export const getFilterOptions = async (userFilter: UserFilter) =>
     post<FilterOptions>("/api/users/filter-options", userFilter);
 

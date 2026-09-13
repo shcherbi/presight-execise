@@ -1,44 +1,61 @@
 import "./FilterPanel.css"
+import {useEffect, useState} from "react";
+import type {FilterOptions} from "presight-server/dist/models/user.ts";
+import {getFilterOptions} from "../../services/api.ts";
+import FilterOption from "../FilterOption/FilterOption.tsx";
 
 function FilterPanel() {
+    const [filterOptions, setFilterOptions] = useState<FilterOptions>({
+        hobbies: [],
+        nationalities: []
+    });
+
+    useEffect(() => {
+        async function loadFilterOptions() {
+            const options = await getFilterOptions({});
+            setFilterOptions(options);
+        }
+
+        void loadFilterOptions();
+    })
+
     return (
         <aside className="filter-panel-container">
             <div className="filter-panel-title">
-            <h2>
-                Refine Records
-            </h2>
-            <button>Clear all</button>
+                <h2>
+                    Refine Records
+                </h2>
+                <button>Clear all</button>
             </div>
-
-            <div className="filter-section">
-                <div className="filter-heading">
-                    <h3>Hobbies</h3>
-                    <span>TOP 20</span>
-                </div>
-                <div>
-                    <div className="filter-checkbox">
-                        <label><input type="checkbox" title="Diving"/> Diving</label>
-                        <strong>20</strong>
+            <div className="filter-section-container">
+                <div className="filter-section">
+                    <div className="filter-heading">
+                        <h3>Hobbies</h3>
+                        <span>TOP 20</span>
                     </div>
-                    <div className="filter-checkbox">
-                        <label><input type="checkbox" title="Diving"/> Boxing</label>
-                        <strong>10</strong>
+                    <div>
+                        {
+                            filterOptions.hobbies.map(valueCount => (
+                                <FilterOption key={valueCount.value}
+                                              value={valueCount.value}
+                                              count={valueCount.count}/>
+                            ))
+                        }
                     </div>
                 </div>
-            </div>
-            <div className="filter-section">
-                <div className="filter-heading">
-                    <h3>Nationalities</h3>
-                    <span>TOP 20</span>
-                </div>
-                <div>
-                    <div className="filter-checkbox">
-                        <label><input type="checkbox" title="English"/> English</label>
-                        <strong>20</strong>
+                <div className="filter-section">
+                    <div className="filter-heading">
+                        <h3>Nationalities</h3>
+                        <span>TOP 20</span>
                     </div>
-                    <div className="filter-checkbox">
-                        <label><input type="checkbox" title="Indus"/> Indus</label>
-                        <strong>10</strong>
+                    <div>
+                        {
+                            filterOptions.nationalities.map(valueCount => (
+                                <FilterOption key={valueCount.value}
+                                              value={valueCount.value}
+                                              count={valueCount.count}/>
+                            ))
+                        }
                     </div>
                 </div>
             </div>

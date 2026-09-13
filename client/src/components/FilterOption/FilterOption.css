@@ -1,0 +1,14 @@
+.filter-checkbox {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+}
+
+.filter-checkbox strong {
+    text-align: center;
+    color: rgb(95, 89, 79);
+    min-width: 28px;
+    background: rgb(221, 211, 192);
+    padding: 3px 5px;
+    font: 700 11px / 1 "Courier New", monospace;
+}
