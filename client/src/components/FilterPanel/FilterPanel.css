@@ -55,6 +55,12 @@
     padding: 17px 15px;
 }
 
+.filter-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 .filter-section:last-child {
     border-bottom: 0;
 }

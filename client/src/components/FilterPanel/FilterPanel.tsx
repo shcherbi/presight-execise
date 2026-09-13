@@ -33,7 +33,7 @@ function FilterPanel() {
                         <h3>Hobbies</h3>
                         <span>TOP 20</span>
                     </div>
-                    <div>
+                    <div className="filter-checkboxes">
                         {
                             filterOptions.hobbies.map(valueCount => (
                                 <FilterOption key={valueCount.value}
@@ -48,7 +48,7 @@ function FilterPanel() {
                         <h3>Nationalities</h3>
                         <span>TOP 20</span>
                     </div>
-                    <div>
+                    <div className="filter-checkboxes">
                         {
                             filterOptions.nationalities.map(valueCount => (
                                 <FilterOption key={valueCount.value}
