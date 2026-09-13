@@ -33,12 +33,5 @@
     flex: 1;
     min-height: 0;
     padding-right: 10px;
-    overflow-y: scroll;
-}
-
-.user-cards {
-    display: flex;
-    flex-wrap: wrap;
-
-    gap: 24px;
+    overflow: hidden;
 }

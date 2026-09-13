@@ -58,13 +58,15 @@ export type FilterOptions = {
 
 export type UserRow = Omit<User, "hobbies"> & { hobbies: string | null };
 
+export type Pagination = {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNextPage: boolean;
+};
+
 export type PaginatedUsers = {
     users: User[];
-    pagination: {
-        page: number;
-        limit: number;
-        total: number;
-        totalPages: number;
-        hasNextPage: boolean;
-    };
+    pagination: Pagination
 };

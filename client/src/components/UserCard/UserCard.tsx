@@ -14,7 +14,7 @@ function UserCard(user: User) {
                 <div className="hobby-row">
                     {
                         user.hobbies.slice(0, 2).map((hobbie: string) => (
-                            <span>{hobbie}</span>
+                            <span key={hobbie}>{hobbie}</span>
                         ))
                     }
                     {user.hobbies.length > 3 ? <span className="more-hobbies">{user.hobbies.length - 2}</span> : null}
