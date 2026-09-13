@@ -1,8 +1,8 @@
 import "./FilterPanel.css"
 import {useEffect, useState} from "react";
-import type {FilterOptions} from "presight-server/dist/models/user.ts";
 import {getFilterOptions} from "../../services/api.ts";
 import FilterOption from "../FilterOption/FilterOption.tsx";
+import type {FilterOptions, UserFilter} from "../../../../server/src/models/user.ts";
 
 function FilterPanel() {
     const [filterOptions, setFilterOptions] = useState<FilterOptions>({
@@ -12,12 +12,12 @@ function FilterPanel() {
 
     useEffect(() => {
         async function loadFilterOptions() {
-            const options = await getFilterOptions({});
+            const options: FilterOptions = await getFilterOptions({} as UserFilter);
             setFilterOptions(options);
         }
 
         void loadFilterOptions();
-    })
+    }, [])
 
     return (
         <aside className="filter-panel-container">

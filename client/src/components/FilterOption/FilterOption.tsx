@@ -1,5 +1,5 @@
 import "./FilterOption.css"
-import type {ValueCount} from "presight-server/dist/models/user.ts";
+import type {ValueCount} from "../../../../server/src/models/user.ts";
 
 function FilterOption({value, count}: ValueCount) {
     return (

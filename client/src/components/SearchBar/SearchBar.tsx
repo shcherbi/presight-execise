@@ -14,7 +14,7 @@ function SearchBar() {
                     <option value="age">Age</option>
                     <option value="nationality">Nationality</option>
                 </select>
-                <button>↑ A–Z</button>
+                <button>↑</button>
             </div>
         </section>
     );

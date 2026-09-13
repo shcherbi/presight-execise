@@ -1,18 +1,23 @@
 import "./UserCard.css"
+import type {User} from "../../../../server/src/models/user.ts";
 
-function UserCard() {
+function UserCard(user: User) {
     return (
         <article className="user-card">
-            <img className="avatar"  alt="" loading="lazy" width={92} height={106} />
+            <img className="avatar" src={import.meta.env.VITE_API_URI + user.avatar}
+                 loading="lazy" width={92} height={106}/>
             <div className="user-details">
-                <h3>John Doe</h3>
+                <h3>{user.first_name + ' ' + user.last_name}</h3>
                 <div className="user-meta">
-                    <span>Polish</span><i aria-hidden="true"></i><span>46 years</span>
+                    <span>{user.nationality}</span><i aria-hidden="true"></i><span>{user.age} years</span>
                 </div>
                 <div className="hobby-row">
-                    <span>Diving</span>
-                    <span>Boxing</span>
-                    <span className="more-hobbies" title="Climbing, Photography, Sailing, Entomology">+4</span>
+                    {
+                        user.hobbies.slice(0, 2).map((hobbie: string) => (
+                            <span>{hobbie}</span>
+                        ))
+                    }
+                    {user.hobbies.length > 3 ? <span className="more-hobbies">{user.hobbies.length - 2}</span> : null}
                 </div>
             </div>
         </article>

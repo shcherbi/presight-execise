@@ -1,4 +1,4 @@
-import type {FilterOptions, UserFilter, UserQuery} from "../../../server/src/models/user.ts";
+import type {FilterOptions, PaginatedUsers, UserFilter, UserQuery} from "../../../server/src/models/user.ts";
 
 const BASE_URI: string = import.meta.env.VITE_API_URI;
 
@@ -15,10 +15,10 @@ async function post<T>(path: string, body: unknown): Promise<T> {
     return res.json();
 }
 
-export const getUsersPaginated = async (userQuery: UserQuery) =>
-    post<UserQuery>("/api/users/query", userQuery);
+export const getPaginatedUsers = async (userQuery: UserQuery): Promise<PaginatedUsers> =>
+    post<PaginatedUsers>("/api/users/query", userQuery);
 
 
-export const getFilterOptions = async (userFilter: UserFilter) =>
+export const getFilterOptions = async (userFilter: UserFilter): Promise<FilterOptions> =>
     post<FilterOptions>("/api/users/filter-options", userFilter);
 
