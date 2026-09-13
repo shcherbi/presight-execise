@@ -2,11 +2,11 @@ import "./UserList.css"
 import {useEffect, useRef, useState} from "react";
 import type {PaginatedUsers, Pagination, User, UserQuery} from "../../../../server/src/models/user.ts";
 import {getPaginatedUsers} from "../../services/api.ts";
-import {Virtuoso} from "react-virtuoso";
+import {VirtuosoGrid} from "react-virtuoso";
 import UserCard from "../UserCard/UserCard.tsx";
 
 function UserList(query: UserQuery) {
-    const [users, setUsers] = useState<User[]>();
+    const [users, setUsers] = useState<User[]>([]);
     const [pagination, setPagination] = useState<Pagination>();
     const [isLoadingMoreLabelVisible, setLoadingMoreLabelVisible] = useState<boolean>(false);
     const loadingMoreRef = useRef<boolean>(false);
@@ -60,8 +60,9 @@ function UserList(query: UserQuery) {
                 <p><strong>{pagination?.total}</strong> records found</p>
             </div>
             <div className="users-list">
-                <Virtuoso
-                    style={{height: "100%", display: "flex", flexWrap: "wrap", gap: "24px"}}
+                <VirtuosoGrid
+                    style={{height: "100%"}}
+                    listClassName="user-cards"
                     key={query.toString()}
                     data={users}
                     computeItemKey={(_, user) => user.id}
@@ -71,7 +72,7 @@ function UserList(query: UserQuery) {
                     }}
                     endReached={() => loadNextPage(query)}
                     itemContent={(_, user) => (
-                        <UserCard key={user.id} {...user}/>
+                        <UserCard {...user}/>
                     )}
                     components={{
                         Footer: () => {
@@ -86,38 +87,6 @@ function UserList(query: UserQuery) {
             </div>
         </main>
     );
-
-    /*
-           useEffect(() => {
-            async function loadPaginatedUsers() {
-                const paginatedUsers: PaginatedUsers = await getPaginatedUsers({} as UserQuery);
-                setUsers(paginatedUsers.users);
-                setPagination(paginatedUsers.pagination);
-            }
-
-            void loadPaginatedUsers();
-        }, [])
-
-       return (
-            <main className="user-container">
-                <div className="users-heading">
-                    <div>
-                        <span className="eyebrow">Verified operatives</span>
-                        <h2>Matching case files</h2>
-                    </div>
-                    <p><strong>{users?.pagination.total}</strong> records found</p>
-                </div>
-                <div className="users-list">
-                    <div className="user-cards">
-                        {
-                            users?.users.map((user: User) => (
-                            <UserCard key={user.id} {...user}/>
-                            ))
-                        }
-                    </div>
-                </div>
-            </main>
-        );*/
 }
 
 export default UserList;

@@ -35,3 +35,9 @@
     padding-right: 10px;
     overflow: hidden;
 }
+
+.user-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
