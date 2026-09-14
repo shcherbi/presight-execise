@@ -4,23 +4,24 @@ import type {Dispatch, SetStateAction} from "react";
 
 type FilterOptionProps = ValueCount & {
     onSelect: Dispatch<SetStateAction<string[]>>;
+    selected: boolean;
 }
 
-function FilterOption({value, count, onSelect}: FilterOptionProps) {
+function FilterOption({value, count, onSelect, selected}: FilterOptionProps) {
     return (
         <div className="filter-checkbox">
-            <label><input onChange={event => onSelect((values) => {
-                const selectedCheckbox: string = event.target.value;
-                    if (values.includes(selectedCheckbox)) {
-                        return values.filter(currentValue => currentValue !== selectedCheckbox)
-                    } else {
-                        return [
-                            ...values,
-                            selectedCheckbox
-                        ]
-                    }
-                }
-            )} type="checkbox" value={value}/> {value}</label>
+            <label>
+                <input
+                    type="checkbox"
+                    checked={selected}
+                    onChange={() => onSelect(values =>
+                        selected
+                            ? values.filter(currentValue => currentValue !== value)
+                            : [...values, value]
+                    )}
+                />
+                {value}
+            </label>
             <strong>{count}</strong>
         </div>
     );

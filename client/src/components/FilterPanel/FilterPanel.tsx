@@ -42,7 +42,10 @@ function FilterPanel({setQuery}: FilterPanelProps) {
                 <h2>
                     Refine Records
                 </h2>
-                <button>Clear all</button>
+                <button onClick={() => {
+                    setSelectedHobbiesFilterOption([]);
+                    setSelectedNationalitiesOption([]);
+                }}>Clear all</button>
             </div>
             <div className="filter-section-container">
                 <div className="filter-section">
@@ -56,6 +59,7 @@ function FilterPanel({setQuery}: FilterPanelProps) {
                                 <FilterOption key={valueCount.value}
                                               value={valueCount.value}
                                               count={valueCount.count}
+                                              selected={selectedHobbiesFilterOption.includes(valueCount.value)}
                                               onSelect={setSelectedHobbiesFilterOption}
                                 />
                             ))
@@ -73,6 +77,7 @@ function FilterPanel({setQuery}: FilterPanelProps) {
                                 <FilterOption key={valueCount.value}
                                               value={valueCount.value}
                                               count={valueCount.count}
+                                              selected={selectedNationalitiesOption.includes(valueCount.value)}
                                               onSelect={setSelectedNationalitiesOption}
                                 />
                             ))
