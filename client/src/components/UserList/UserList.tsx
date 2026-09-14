@@ -39,7 +39,7 @@ function UserList(query: UserQuery) {
             );
 
             setUsers((currentUsers) => [
-                ...currentUsers ?? [],
+                ...currentUsers,
                 ...paginatedUsers.users
             ])
 
@@ -63,7 +63,6 @@ function UserList(query: UserQuery) {
                 <VirtuosoGrid
                     style={{height: "100%"}}
                     listClassName="user-cards"
-                    key={query.toString()}
                     data={users}
                     computeItemKey={(_, user) => user.id}
                     increaseViewportBy={{
@@ -79,7 +78,6 @@ function UserList(query: UserQuery) {
                             if (isLoadingMoreLabelVisible) {
                                 return <div>Loading more users…</div>;
                             }
-
                             return null;
                         }
                     }}

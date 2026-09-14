@@ -4,15 +4,18 @@ import SearchBar from "./components/SearchBar/SearchBar.tsx";
 import FilterPanel from "./components/FilterPanel/FilterPanel.tsx";
 import UserList from "./components/UserList/UserList.tsx";
 import type {UserQuery} from "presight-server/dist/models/user.ts";
+import {useState} from "react";
 
 function App() {
+    const [query, setQuery] = useState<UserQuery>({} as UserQuery)
+
     return (
         <div className={"wrapper-container"}>
             <Header/>
-            <SearchBar/>
+            <SearchBar setQuery={setQuery}/>
             <div className={"main-container"}>
                 <FilterPanel/>
-                <UserList {...{} as UserQuery}/>
+                <UserList {...query}/>
             </div>
         </div>
     )
