@@ -5,10 +5,11 @@ import FilterOption from "../FilterOption/FilterOption.tsx";
 import type {FilterOptions, UserFilter, UserQuery} from "../../../../server/src/models/user.ts";
 
 type FilterPanelProps = {
-    setQuery: Dispatch<SetStateAction<UserQuery>>;
+    setQuery: Dispatch<SetStateAction<UserQuery>>,
+    query: UserQuery
 };
 
-function FilterPanel({setQuery}: FilterPanelProps) {
+function FilterPanel({setQuery, query}: FilterPanelProps) {
     const [filterOptions, setFilterOptions] = useState<FilterOptions>({
         hobbies: [],
         nationalities: []
@@ -16,12 +17,18 @@ function FilterPanel({setQuery}: FilterPanelProps) {
 
     useEffect(() => {
         async function loadFilterOptions() {
-            const options: FilterOptions = await getFilterOptions({} as UserFilter);
+            const userFilter: UserFilter = {
+                name: query.name,
+                hobbies: query.hobbies,
+                nationalities: query.nationalities,
+            };
+
+            const options = await getFilterOptions(userFilter);
             setFilterOptions(options);
         }
 
         void loadFilterOptions();
-    }, [])
+    }, [query]);
 
     const [selectedHobbiesFilterOption, setSelectedHobbiesFilterOption] = useState<string[]>([]);
     const [selectedNationalitiesOption, setSelectedNationalitiesOption] = useState<string[]>([]);
@@ -34,7 +41,7 @@ function FilterPanel({setQuery}: FilterPanelProps) {
                 nationalities: selectedNationalitiesOption
             }
         ))
-    },[selectedHobbiesFilterOption, selectedNationalitiesOption])
+    }, [selectedHobbiesFilterOption, selectedNationalitiesOption]);
 
     return (
         <aside className="filter-panel-container">
@@ -45,7 +52,8 @@ function FilterPanel({setQuery}: FilterPanelProps) {
                 <button onClick={() => {
                     setSelectedHobbiesFilterOption([]);
                     setSelectedNationalitiesOption([]);
-                }}>Clear all</button>
+                }}>Clear all
+                </button>
             </div>
             <div className="filter-section-container">
                 <div className="filter-section">

@@ -12,14 +12,14 @@ function App() {
         sortBy: {
             firstName: "ASC"
         }
-    } as UserQuery)
+    } as UserQuery);
 
     return (
         <div className={"wrapper-container"}>
             <Header/>
             <SearchBar setQuery={setQuery}/>
             <div className={"main-container"}>
-                <FilterPanel setQuery={setQuery}/>
+                <FilterPanel query={query} setQuery={setQuery}/>
                 <UserList {...query}/>
             </div>
             <Tooltip

@@ -26,7 +26,7 @@ function SearchBar({setQuery}: SearchBarProps) {
         return () => {
             clearTimeout(timeoutId);
         }
-    }, [searchValue])
+    }, [searchValue]);
 
     useEffect(() => {
         setQuery((query: UserQuery) => ({
@@ -35,7 +35,7 @@ function SearchBar({setQuery}: SearchBarProps) {
                 [sortKey]: sortDirection
             }
         }));
-    },[sortKey, sortDirection])
+    },[sortKey, sortDirection]);
 
     return (
         <section className="search-bar-container">

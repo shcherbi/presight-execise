@@ -19,7 +19,7 @@ function UserList(query: UserQuery) {
 
     useEffect(() => {
         void loadFirstPage(query)
-    }, [query])
+    }, [query]);
 
     async function loadNextPage(query: UserQuery) {
         // Return if a request is already in progress or there are no more pages.
