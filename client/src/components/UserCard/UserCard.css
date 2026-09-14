@@ -59,3 +59,21 @@
 
     padding: 5px 8px 4px;
 }
+
+.more-hobbies {
+    cursor: help;
+}
+
+.hobbies-tooltip.react-tooltip {
+    color: #182229;
+    background: rgb(248, 242, 230);
+    border: 1px solid var(--rule);
+    border-radius: 0;
+    box-shadow: rgb(179, 168, 145) 3px 3px;
+    font: 11px / 1.3 "Courier New", monospace;
+    letter-spacing: 0.04em;
+    max-width: 240px;
+    padding: 8px 10px;
+    text-transform: uppercase;
+    opacity: 1;
+}

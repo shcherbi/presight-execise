@@ -21,12 +21,21 @@ function SearchBar({setQuery}: SearchBarProps) {
                     [sortKey]: sortDirection
                 }
             }));
-        }, 400)
+        }, 1000)
 
         return () => {
             clearTimeout(timeoutId);
         }
-    }, [searchValue, sortKey, sortDirection])
+    }, [searchValue])
+
+    useEffect(() => {
+        setQuery((query: UserQuery) => ({
+            ...query,
+            sortBy: {
+                [sortKey]: sortDirection
+            }
+        }));
+    },[sortKey, sortDirection])
 
     return (
         <section className="search-bar-container">

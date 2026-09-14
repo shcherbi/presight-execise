@@ -17,7 +17,15 @@ function UserCard(user: User) {
                             <span key={hobbie}>{hobbie}</span>
                         ))
                     }
-                    {user.hobbies.length > 3 ? <span className="more-hobbies">+{user.hobbies.length - 2}</span> : null}
+                    {user.hobbies.length > 2 ? (
+                        <span
+                            className="more-hobbies"
+                            data-tooltip-id="hobbies-tooltip"
+                            data-tooltip-content={user.hobbies.slice(2).join(", ")}
+                        >
+                            +{user.hobbies.length - 2}
+                        </span>
+                    ) : null}
                 </div>
             </div>
         </article>
