@@ -1,5 +1,6 @@
 .user-card {
-    width: 600px;
+    width: min(600px, 100%);
+    min-width: 0;
     height: 164px;
     display: flex;
     gap: 24px;
@@ -10,6 +11,7 @@
 
     padding: 26px 28px;
     overflow: hidden;
+    flex: 1 1 360px;
 }
 
 .avatar {
@@ -25,6 +27,7 @@
     font-size: 25px;
     font-weight: 500;
     margin: 0 0 7px;
+    overflow-wrap: anywhere;
 }
 
 .user-meta {
@@ -62,6 +65,28 @@
 
 .more-hobbies {
     cursor: help;
+}
+
+@media (max-width: 600px) {
+    .user-card {
+        height: auto;
+        min-height: 140px;
+        gap: 14px;
+        padding: 16px;
+    }
+
+    .avatar {
+        width: 76px;
+        height: 88px;
+    }
+
+    .user-details h3 {
+        font-size: 20px;
+    }
+
+    .hobby-row {
+        margin-top: 12px;
+    }
 }
 
 .hobbies-tooltip.react-tooltip {

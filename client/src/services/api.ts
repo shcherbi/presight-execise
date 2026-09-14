@@ -1,6 +1,6 @@
 import type {FilterOptions, PaginatedUsers, UserFilter, UserQuery} from "../../../server/src/models/user.ts";
 
-const BASE_URI: string = import.meta.env.VITE_API_URI;
+const BASE_URI = import.meta.env.VITE_API_URI || "";
 
 async function post<T>(path: string, body: unknown): Promise<T> {
     const res = await fetch(`${BASE_URI}${path}`, {
@@ -21,4 +21,3 @@ export const getPaginatedUsers = async (userQuery: UserQuery): Promise<Paginated
 
 export const getFilterOptions = async (userFilter: UserFilter): Promise<FilterOptions> =>
     post<FilterOptions>("/api/users/filter-options", userFilter);
-

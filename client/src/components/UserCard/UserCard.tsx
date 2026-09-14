@@ -4,8 +4,8 @@ import type {User} from "../../../../server/src/models/user.ts";
 function UserCard(user: User) {
     return (
         <article className="user-card">
-            <img className="avatar" src={import.meta.env.VITE_API_URI + user.avatar}
-                 loading="lazy" width={92} height={106}/>
+            <img className="avatar" src={(import.meta.env.VITE_API_URI || "") + user.avatar}
+                 loading="lazy" width={92} height={106} alt={`Portrait of ${user.first_name} ${user.last_name}`}/>
             <div className="user-details">
                 <h3>{user.first_name + ' ' + user.last_name}</h3>
                 <div className="user-meta">
