@@ -13,8 +13,6 @@ dist/
 build/
 scripts/
 
-server/db/avatars/
-
 # misc
 .DS_Store
 .env
