@@ -117,3 +117,18 @@ Please provide:
 - A `Dockerfile` and `docker-compose.yml`.
 - Instructions for setup, database seeding, and running locally.
 - Instructions for running with Docker Compose.
+
+## Docker
+
+Build and start the client and server as one container:
+
+```bash
+docker compose up --build --force-recreate
+```
+
+Open http://localhost:3000. Express serves the Vite client, the API, and the
+avatar files from the same origin, so no client API URL configuration is
+needed in Docker.
+
+The existing SQLite database and 1,000 avatar files from `server/db` are
+copied into the image during the build.

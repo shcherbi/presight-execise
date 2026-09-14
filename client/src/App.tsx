@@ -4,7 +4,7 @@ import SearchBar from "./components/SearchBar/SearchBar.tsx";
 import FilterPanel from "./components/FilterPanel/FilterPanel.tsx";
 import UserList from "./components/UserList/UserList.tsx";
 import type {UserQuery} from "presight-server/dist/models/user.ts";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Tooltip} from "react-tooltip";
 
 function App() {
@@ -13,6 +13,10 @@ function App() {
             firstName: "ASC"
         }
     } as UserQuery);
+
+    useEffect(() => {
+        document.title = "The Detective Registry"
+    }, [])
 
     return (
         <div className={"wrapper-container"}>

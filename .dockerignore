@@ -1,0 +1,13 @@
+.git
+.idea
+avatar-generator
+node_modules
+**/node_modules
+**/dist
+**/.env
+**/.env.*.local
+server/db/*.sqlite3-shm
+server/db/*.sqlite3-wal
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
