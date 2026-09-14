@@ -1,10 +1,14 @@
 import "./FilterPanel.css"
-import {useEffect, useState} from "react";
+import {type Dispatch, type SetStateAction, useEffect, useState} from "react";
 import {getFilterOptions} from "../../services/api.ts";
 import FilterOption from "../FilterOption/FilterOption.tsx";
-import type {FilterOptions, UserFilter} from "../../../../server/src/models/user.ts";
+import type {FilterOptions, UserFilter, UserQuery} from "../../../../server/src/models/user.ts";
 
-function FilterPanel() {
+type FilterPanelProps = {
+    setQuery: Dispatch<SetStateAction<UserQuery>>;
+};
+
+function FilterPanel({setQuery}: FilterPanelProps) {
     const [filterOptions, setFilterOptions] = useState<FilterOptions>({
         hobbies: [],
         nationalities: []
@@ -18,6 +22,19 @@ function FilterPanel() {
 
         void loadFilterOptions();
     }, [])
+
+    const [selectedHobbiesFilterOption, setSelectedHobbiesFilterOption] = useState<string[]>([]);
+    const [selectedNationalitiesOption, setSelectedNationalitiesOption] = useState<string[]>([]);
+
+    useEffect(() => {
+        setQuery((query: UserQuery) => (
+            {
+                ...query,
+                hobbies: selectedHobbiesFilterOption,
+                nationalities: selectedNationalitiesOption
+            }
+        ))
+    },[selectedHobbiesFilterOption, selectedNationalitiesOption])
 
     return (
         <aside className="filter-panel-container">
@@ -38,7 +55,9 @@ function FilterPanel() {
                             filterOptions.hobbies.map(valueCount => (
                                 <FilterOption key={valueCount.value}
                                               value={valueCount.value}
-                                              count={valueCount.count}/>
+                                              count={valueCount.count}
+                                              onSelect={setSelectedHobbiesFilterOption}
+                                />
                             ))
                         }
                     </div>
@@ -53,7 +72,9 @@ function FilterPanel() {
                             filterOptions.nationalities.map(valueCount => (
                                 <FilterOption key={valueCount.value}
                                               value={valueCount.value}
-                                              count={valueCount.count}/>
+                                              count={valueCount.count}
+                                              onSelect={setSelectedNationalitiesOption}
+                                />
                             ))
                         }
                     </div>

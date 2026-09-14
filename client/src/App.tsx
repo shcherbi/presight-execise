@@ -7,14 +7,18 @@ import type {UserQuery} from "presight-server/dist/models/user.ts";
 import {useState} from "react";
 
 function App() {
-    const [query, setQuery] = useState<UserQuery>({} as UserQuery)
+    const [query, setQuery] = useState<UserQuery>({
+        sortBy: {
+            firstName: "ASC"
+        }
+    } as UserQuery)
 
     return (
         <div className={"wrapper-container"}>
             <Header/>
             <SearchBar setQuery={setQuery}/>
             <div className={"main-container"}>
-                <FilterPanel/>
+                <FilterPanel setQuery={setQuery}/>
                 <UserList {...query}/>
             </div>
         </div>
