@@ -70,6 +70,10 @@ function UserList({query}: UserListProps) {
                     style={{height: "100%"}}
                     listClassName="user-cards"
                     data={users}
+                    increaseViewportBy={{
+                        top: 200,
+                        bottom: 600
+                    }}
                     computeItemKey={(_, user) => user.id}
                     endReached={() => {
                         if (pagination?.hasNextPage) {
