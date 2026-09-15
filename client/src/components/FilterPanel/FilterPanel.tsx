@@ -14,8 +14,15 @@ function FilterPanel({setQuery, query}: FilterPanelProps) {
         hobbies: [],
         nationalities: []
     });
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string>();
+    const [retryCount, setRetryCount] = useState(0);
+    const selectedHobbies = query.hobbies ?? [];
+    const selectedNationalities = query.nationalities ?? [];
 
     useEffect(() => {
+        let isStale = false;
+
         async function loadFilterOptions() {
             const userFilter: UserFilter = {
                 name: query.name,
@@ -23,55 +30,78 @@ function FilterPanel({setQuery, query}: FilterPanelProps) {
                 nationalities: query.nationalities,
             };
 
-            const options = await getFilterOptions(userFilter);
-            setFilterOptions(options);
+            setIsLoading(true);
+            setError(undefined);
+
+            try {
+                const options = await getFilterOptions(userFilter);
+                if (!isStale) {
+                    setFilterOptions(options);
+                }
+            } catch {
+                if (!isStale) {
+                    setError("Filter options could not be loaded.");
+                }
+            } finally {
+                if (!isStale) {
+                    setIsLoading(false);
+                }
+            }
         }
 
         void loadFilterOptions();
-    }, [query]);
+        return () => {
+            isStale = true;
+        };
+    }, [query.name, query.hobbies, query.nationalities, retryCount]);
 
-    const [selectedHobbiesFilterOption, setSelectedHobbiesFilterOption] = useState<string[]>([]);
-    const [selectedNationalitiesOption, setSelectedNationalitiesOption] = useState<string[]>([]);
+    function updateFilter(filter: "hobbies" | "nationalities", filterValue: string): void {
+        setQuery(currentQuery => {
+            const currentFilterValues = currentQuery[filter] ?? [];
+            const nextFilterValues = currentFilterValues.includes(filterValue)
+                ? currentFilterValues.filter(currentValue => currentValue !== filterValue)
+                : [...currentFilterValues, filterValue];
 
-    useEffect(() => {
-        setQuery((query: UserQuery) => (
-            {
-                ...query,
-                hobbies: selectedHobbiesFilterOption,
-                nationalities: selectedNationalitiesOption
-            }
-        ))
-    }, [selectedHobbiesFilterOption, selectedNationalitiesOption]);
+            return filter === "hobbies"
+                ? {...currentQuery, hobbies: nextFilterValues}
+                : {...currentQuery, nationalities: nextFilterValues};
+        });
+    }
 
     return (
         <aside className="filter-panel-container">
             <div className="filter-panel-title">
-                <h2>
-                    Refine Records
-                </h2>
-                <button onClick={() => {
-                    setSelectedHobbiesFilterOption([]);
-                    setSelectedNationalitiesOption([]);
-                }}>Clear all
-                </button>
+                <h2>Refine Records</h2>
+                <button type="button" onClick={() => {
+                    setQuery(currentQuery => ({
+                        ...currentQuery,
+                        hobbies: [],
+                        nationalities: []
+                    }));
+                }}>Clear all</button>
             </div>
             <div className="filter-section-container">
+                {isLoading ? <p className="filter-status" role="status">Loading filter options…</p> : null}
+                {error ? (
+                    <div className="filter-status error-state" role="alert">
+                        <p>{error}</p>
+                        <button className="try-again" type="button" onClick={() => setRetryCount(count => count + 1)}>Try again</button>
+                    </div>
+                ) : null}
                 <div className="filter-section">
                     <div className="filter-heading">
                         <h3>Hobbies</h3>
                         <span>TOP 20</span>
                     </div>
                     <div className="filter-checkboxes">
-                        {
-                            filterOptions.hobbies.map(valueCount => (
-                                <FilterOption key={valueCount.value}
-                                              value={valueCount.value}
-                                              count={valueCount.count}
-                                              selected={selectedHobbiesFilterOption.includes(valueCount.value)}
-                                              onSelect={setSelectedHobbiesFilterOption}
-                                />
-                            ))
-                        }
+                        {filterOptions.hobbies.map(valueCount => (
+                            <FilterOption key={valueCount.value}
+                                          value={valueCount.value}
+                                          count={valueCount.count}
+                                          selected={selectedHobbies.includes(valueCount.value)}
+                                          onSelect={() => updateFilter("hobbies", valueCount.value)}
+                            />
+                        ))}
                     </div>
                 </div>
                 <div className="filter-section">
@@ -80,16 +110,14 @@ function FilterPanel({setQuery, query}: FilterPanelProps) {
                         <span>TOP 20</span>
                     </div>
                     <div className="filter-checkboxes">
-                        {
-                            filterOptions.nationalities.map(valueCount => (
-                                <FilterOption key={valueCount.value}
-                                              value={valueCount.value}
-                                              count={valueCount.count}
-                                              selected={selectedNationalitiesOption.includes(valueCount.value)}
-                                              onSelect={setSelectedNationalitiesOption}
-                                />
-                            ))
-                        }
+                        {filterOptions.nationalities.map(valueCount => (
+                            <FilterOption key={valueCount.value}
+                                          value={valueCount.value}
+                                          count={valueCount.count}
+                                          selected={selectedNationalities.includes(valueCount.value)}
+                                          onSelect={() => updateFilter("nationalities", valueCount.value)}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>

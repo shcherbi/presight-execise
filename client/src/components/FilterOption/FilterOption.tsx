@@ -1,9 +1,8 @@
 import "./FilterOption.css"
 import type {ValueCount} from "../../../../server/src/models/user.ts";
-import type {Dispatch, SetStateAction} from "react";
 
 type FilterOptionProps = ValueCount & {
-    onSelect: Dispatch<SetStateAction<string[]>>;
+    onSelect: () => void;
     selected: boolean;
 }
 
@@ -14,11 +13,7 @@ function FilterOption({value, count, onSelect, selected}: FilterOptionProps) {
                 <input
                     type="checkbox"
                     checked={selected}
-                    onChange={() => onSelect(values =>
-                        selected
-                            ? values.filter(currentValue => currentValue !== value)
-                            : [...values, value]
-                    )}
+                    onChange={onSelect}
                 />
                 {value}
             </label>

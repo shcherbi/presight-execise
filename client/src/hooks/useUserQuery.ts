@@ -13,18 +13,17 @@ import {
 } from "nuqs";
 
 import type {UserQuery} from "../../../server/src/models/user.ts";
-import {SortBy} from "../../../server/src/models/db.ts";
-
-const SORT_FIELDS = ["firstName", "lastName", "age", "nationality"] as const;
-type SortField = typeof SORT_FIELDS[number];
+import {SORT_BY} from "../../../server/src/models/db.ts";
+import {SORT_FIELDS} from "../shared/constants/sorting.ts";
+import type {SortField} from "../shared/types/sorting.ts";
 
 const DEFAULT_SORT_FIELD: SortField = "firstName";
-const DEFAULT_SORT_DIRECTION = SortBy.ASC;
+const DEFAULT_SORT_DIRECTION = SORT_BY.ASC;
 
 const queryParams = {
     name: parseAsString.withDefault(""),
     sort: parseAsStringLiteral(SORT_FIELDS).withDefault(DEFAULT_SORT_FIELD),
-    direction: parseAsStringLiteral([SortBy.ASC, SortBy.DESC]).withDefault(DEFAULT_SORT_DIRECTION),
+    direction: parseAsStringLiteral([SORT_BY.ASC, SORT_BY.DESC]).withDefault(DEFAULT_SORT_DIRECTION),
     hobby: parseAsNativeArrayOf(parseAsString).withDefault([]),
     nationality: parseAsNativeArrayOf(parseAsString).withDefault([])
 };

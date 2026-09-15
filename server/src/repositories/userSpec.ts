@@ -1,5 +1,5 @@
 import type {UserFilter, UserQuery} from "../models/user.ts";
-import {type BindValue, type Filter, SortBy} from "../models/db.ts";
+import {type BindValue, type Filter, SORT_BY, type SortBy} from "../models/db.ts";
 
 
 function placeholders(values: unknown[]): string {
@@ -11,7 +11,7 @@ function escapeLike(value: string): string {
 }
 
 function direction(sortBy: SortBy | undefined): string {
-    return sortBy === SortBy.DESC ? "DESC" : "ASC";
+    return sortBy === SORT_BY.DESC ? "DESC" : "ASC";
 }
 
 function buildUserFilter(userQuery: UserFilter): Filter {

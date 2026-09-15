@@ -8,6 +8,8 @@
     box-shadow: rgb(176, 165, 143) 4px 4px;
     background: rgb(238, 230, 215);
     border: 1px solid var(--rule);
+    flex-basis: 0;
+    min-width: 190px;
 }
 
 .filter-panel-title {
@@ -48,6 +50,48 @@
     scrollbar-width: thin;
 
     overflow-y: scroll;
+}
+
+.filter-status {
+    margin: 16px 15px;
+    color: rgb(95, 89, 79);
+    font: 12px / 1.4 "Courier New", monospace;
+}
+
+.filter-status p {
+    margin: 0 0 8px;
+}
+
+.filter-status button,
+.selected-filters button {
+    cursor: pointer;
+}
+
+.selected-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 15px;
+    border-bottom: 1px dashed rgb(154, 145, 127);
+}
+
+.selected-filters button {
+    color: #182229;
+    background: rgb(232, 222, 204);
+    border: 1px solid rgb(165, 154, 135);
+    padding: 4px 7px;
+    font: 11px / 1.2 "Courier New", monospace;
+}
+
+@media (max-width: 800px) {
+    .filter-panel-container {
+        flex: 0 0 auto;
+        max-height: 38vh;
+    }
+
+    .filter-section-container {
+        overflow-y: auto;
+    }
 }
 
 .filter-section {

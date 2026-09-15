@@ -8,11 +8,13 @@
     border-bottom: 1px solid rgb(126, 117, 101);
     gap: 20px;
 
-    padding: 18px 58px;
+    padding: 18px clamp(20px, 6vw, 58px);
 }
 
 .search {
-    width: 750px;
+    width: min(750px, 100%);
+    min-width: 0;
+    flex: 1 1 320px;
 }
 
 .search > input {
@@ -44,4 +46,17 @@
     background: rgb(248, 242, 230);
     border-color: rgb(114, 107, 95);
     cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .search-bar-container {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 12px;
+        padding: 14px;
+    }
+
+    .sort-controls {
+        justify-content: flex-end;
+    }
 }

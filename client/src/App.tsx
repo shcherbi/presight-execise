@@ -3,28 +3,19 @@ import Header from "./components/Header/Header.tsx";
 import SearchBar from "./components/SearchBar/SearchBar.tsx";
 import FilterPanel from "./components/FilterPanel/FilterPanel.tsx";
 import UserList from "./components/UserList/UserList.tsx";
-import type {UserQuery} from "presight-server/dist/models/user.ts";
-import {useEffect, useState} from "react";
 import {Tooltip} from "react-tooltip";
+import {useUserQuery} from "./hooks/useUserQuery.ts";
 
 function App() {
-    const [query, setQuery] = useState<UserQuery>({
-        sortBy: {
-            firstName: "ASC"
-        }
-    } as UserQuery);
-
-    useEffect(() => {
-        document.title = "The Detective Registry"
-    }, [])
+    const {query, setQuery} = useUserQuery();
 
     return (
         <div className={"wrapper-container"}>
             <Header/>
-            <SearchBar setQuery={setQuery}/>
+            <SearchBar query={query} setQuery={setQuery}/>
             <div className={"main-container"}>
                 <FilterPanel query={query} setQuery={setQuery}/>
-                <UserList {...query}/>
+                <UserList query={query}/>
             </div>
             <Tooltip
                 id="hobbies-tooltip"

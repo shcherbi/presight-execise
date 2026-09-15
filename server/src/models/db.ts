@@ -1,9 +1,9 @@
-export const SortBy = {
+export const SORT_BY = {
     ASC: "ASC",
     DESC: "DESC"
 } as const;
 
-export type SortBy = typeof SortBy[keyof typeof SortBy];
+export type SortBy = typeof SORT_BY[keyof typeof SORT_BY];
 
 export type BindValue = string | number;
 

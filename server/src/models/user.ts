@@ -1,6 +1,6 @@
 import {z} from "zod";
 
-import {SortBy} from "./db.ts";
+import {SORT_BY} from "./db.ts";
 
 export const MAX_LIMIT = 100;
 const DEFAULT_PAGE = 1;
@@ -21,7 +21,7 @@ export const userFilterSchema = z.object({
     hobbies: z.array(z.string().min(1).max(100)).max(100).optional(),
 });
 
-const sortDirection = z.enum(SortBy);
+const sortDirection = z.enum(SORT_BY);
 
 export const userQuerySchema = userFilterSchema.extend({
     ...paginationSchema.shape,

@@ -1,0 +1,1 @@
+export const SORT_FIELDS = ["firstName", "lastName", "age", "nationality"] as const;
