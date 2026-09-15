@@ -3,6 +3,7 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
+    flex-basis: 0;
 }
 
 .users-heading {
@@ -13,6 +14,7 @@
     display: flex;
     border-bottom: 1px solid var(--rule);
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .eyebrow {
@@ -36,8 +38,51 @@
     overflow: hidden;
 }
 
+.list-status {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    min-height: 160px;
+    color: rgb(95, 89, 79);
+    text-align: center;
+}
+
+.list-status p {
+    margin: 0 0 12px;
+}
+
+.list-status button,
+.list-footer button {
+    cursor: pointer;
+}
+
+.list-footer {
+    padding: 12px;
+    text-align: center;
+}
+
 .user-cards {
     display: flex;
     flex-wrap: wrap;
     gap: 24px;
+}
+
+@media (max-width: 800px) {
+    .user-container {
+        min-height: 420px;
+        flex: 1 1 auto;
+    }
+
+    .users-heading {
+        align-items: flex-start;
+        margin-bottom: 12px;
+    }
+
+    .users-heading h2 {
+        font-size: 20px;
+    }
+
+    .user-cards {
+        gap: 14px;
+    }
 }

@@ -15,7 +15,7 @@ function App() {
             <SearchBar query={query} setQuery={setQuery}/>
             <div className={"main-container"}>
                 <FilterPanel query={query} setQuery={setQuery}/>
-                <UserList query={query}/>
+                <UserList key={JSON.stringify(query)} query={query}/>
             </div>
             <Tooltip
                 id="hobbies-tooltip"

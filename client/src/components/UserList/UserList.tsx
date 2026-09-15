@@ -1,53 +1,59 @@
 import "./UserList.css"
-import {useEffect, useRef, useState} from "react";
-import type {PaginatedUsers, Pagination, User, UserQuery} from "../../../../server/src/models/user.ts";
+import {useEffect, useState} from "react";
+import type {Pagination, User, UserQuery} from "../../../../server/src/models/user.ts";
 import {getPaginatedUsers} from "../../services/api.ts";
 import {VirtuosoGrid} from "react-virtuoso";
 import UserCard from "../UserCard/UserCard.tsx";
 
-function UserList(query: UserQuery) {
-    const [users, setUsers] = useState<User[]>([]);
-    const [pagination, setPagination] = useState<Pagination>();
-    const [isLoadingMoreLabelVisible, setLoadingMoreLabelVisible] = useState<boolean>(false);
-    const loadingMoreRef = useRef<boolean>(false);
+type UserListProps = {
+    query: UserQuery;
+};
 
-    async function loadFirstPage(query: UserQuery) {
-        const paginatedUsers: PaginatedUsers = await getPaginatedUsers(query);
-        setUsers(paginatedUsers.users);
-        setPagination(paginatedUsers.pagination);
-    }
+function UserList({query}: UserListProps) {
+    const [users, setUsers] = useState<User[]>([]);
+
+    const [page, setPage] = useState(1);
+    const [pagination, setPagination] = useState<Pagination>();
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string>();
+    const [retryCount, setRetryCount] = useState(0);
 
     useEffect(() => {
-        void loadFirstPage(query)
-    }, [query]);
+        let isStale = false;
 
-    async function loadNextPage(query: UserQuery) {
-        // Return if a request is already in progress or there are no more pages.
-        if (loadingMoreRef.current || !pagination?.hasNextPage) {
-            return;
-        }
+        async function loadPage() {
+            setIsLoading(true);
+            setError(undefined);
 
-        loadingMoreRef.current = true;
-        setLoadingMoreLabelVisible(true);
-
-        try {
-            const paginatedUsers: PaginatedUsers = await getPaginatedUsers({
-                    ...query,
-                    page: pagination.page + 1,
-                    limit: pagination.limit
+            try {
+                const paginatedUsers = await getPaginatedUsers({...query, page});
+                if (!isStale) {
+                    setPagination(paginatedUsers.pagination);
+                    setUsers(users => page === 1
+                        ? paginatedUsers.users
+                        : [...users, ...paginatedUsers.users]
+                    );
                 }
-            );
-
-            setUsers((currentUsers) => [
-                ...currentUsers,
-                ...paginatedUsers.users
-            ])
-
-            setPagination(paginatedUsers.pagination)
-        } finally {
-            loadingMoreRef.current = false;
-            setLoadingMoreLabelVisible(false);
+            } catch (error) {
+                if (!isStale) {
+                    setError(error instanceof Error ? error.message : "Users could not be loaded.");
+                }
+            } finally {
+                if (!isStale) {
+                    setIsLoading(false);
+                }
+            }
         }
+
+        void loadPage();
+        return () => {
+            isStale = true;
+        };
+    }, [query, page, retryCount]);
+
+    function retry(): void {
+        setRetryCount(count => count + 1);
     }
 
     return (
@@ -57,7 +63,7 @@ function UserList(query: UserQuery) {
                     <span className="eyebrow">Verified operatives</span>
                     <h2>Matching case files</h2>
                 </div>
-                <p><strong>{pagination?.total}</strong> records found</p>
+                <p><strong>{pagination?.total ?? 0}</strong> records found</p>
             </div>
             <div className="users-list">
                 <VirtuosoGrid
@@ -65,19 +71,37 @@ function UserList(query: UserQuery) {
                     listClassName="user-cards"
                     data={users}
                     computeItemKey={(_, user) => user.id}
-                    increaseViewportBy={{
-                        top: 200,
-                        bottom: 600
+                    endReached={() => {
+                        if (pagination?.hasNextPage) {
+                            setPage(pagination.page + 1);
+                        }
                     }}
-                    endReached={() => loadNextPage(query)}
                     itemContent={(_, user) => (
                         <UserCard {...user}/>
                     )}
                     components={{
                         Footer: () => {
-                            if (isLoadingMoreLabelVisible) {
-                                return <div>Loading more users…</div>;
+                            if (error) {
+                                return (
+                                    <div className="list-status" role="alert">
+                                        <span>{error}</span>
+                                        <button className="try-again" type="button" onClick={retry}>Try again</button>
+                                    </div>
+                                );
                             }
+
+                            if (!isLoading && !error && users.length === 0) {
+                                return (
+                                    <div className="list-status">
+                                        <p>No records match the current search and filters.</p>
+                                    </div>
+                                );
+                            }
+
+                            if (isLoading && users.length > 0) {
+                                return <div className="list-footer" role="status">Loading more records...</div>;
+                            }
+
                             return null;
                         }
                     }}
