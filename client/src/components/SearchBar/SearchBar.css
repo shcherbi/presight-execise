@@ -56,6 +56,10 @@
         padding: 14px;
     }
 
+    .search {
+        flex: none;
+    }
+
     .sort-controls {
         justify-content: flex-end;
     }
