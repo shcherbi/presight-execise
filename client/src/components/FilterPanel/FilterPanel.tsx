@@ -2,12 +2,13 @@ import "./FilterPanel.css"
 import {type Dispatch, type SetStateAction, useEffect, useState} from "react";
 import {getFilterOptions} from "../../services/api.ts";
 import FilterOption from "../FilterOption/FilterOption.tsx";
-import type {FilterOptions, UserFilter, UserQuery} from "../../../../server/src/models/user.ts";
+import type {FilterOptions, UserFilter, UserQuery, ValueCount} from "../../../../server/src/models/user.ts";
 
 type FilterPanelProps = {
     setQuery: Dispatch<SetStateAction<UserQuery>>,
     query: UserQuery
 };
+
 
 function FilterPanel({setQuery, query}: FilterPanelProps) {
     const [filterOptions, setFilterOptions] = useState<FilterOptions>({
@@ -55,6 +56,10 @@ function FilterPanel({setQuery, query}: FilterPanelProps) {
         };
     }, [query.name, query.hobbies, query.nationalities, retryCount]);
 
+    function filterOptionSortingFunction(a: ValueCount, b: ValueCount): number{
+        return Number(selectedHobbies.includes(b.value)) - Number(selectedHobbies.includes(a.value));
+    }
+
     function updateFilter(filter: "hobbies" | "nationalities", filterValue: string): void {
         setQuery(currentQuery => {
             const currentFilterValues = currentQuery[filter] ?? [];
@@ -78,14 +83,19 @@ function FilterPanel({setQuery, query}: FilterPanelProps) {
                         hobbies: [],
                         nationalities: []
                     }));
-                }}>Clear all</button>
+                }}>Clear all
+                </button>
             </div>
             <div className="filter-section-container">
-                {isLoading ? <p className="filter-status" role="status">Loading filter options…</p> : null}
+                {isLoading && !filterOptions.hobbies.length && !filterOptions.nationalities.length
+                    ? <p className="filter-status" role="status">Loading filter options...</p>
+                    : null}
                 {error ? (
                     <div className="filter-status error-state" role="alert">
                         <p>{error}</p>
-                        <button className="try-again" type="button" onClick={() => setRetryCount(count => count + 1)}>Try again</button>
+                        <button className="try-again" type="button"
+                                onClick={() => setRetryCount(count => count + 1)}>Try again
+                        </button>
                     </div>
                 ) : null}
                 <div className="filter-section">
@@ -94,14 +104,15 @@ function FilterPanel({setQuery, query}: FilterPanelProps) {
                         <span>TOP 20</span>
                     </div>
                     <div className="filter-checkboxes">
-                        {filterOptions.hobbies.map(valueCount => (
-                            <FilterOption key={valueCount.value}
-                                          value={valueCount.value}
-                                          count={valueCount.count}
-                                          selected={selectedHobbies.includes(valueCount.value)}
-                                          onSelect={() => updateFilter("hobbies", valueCount.value)}
-                            />
-                        ))}
+                        {filterOptions.hobbies.toSorted(filterOptionSortingFunction)
+                            .map(valueCount => (
+                                <FilterOption key={valueCount.value}
+                                              value={valueCount.value}
+                                              count={valueCount.count}
+                                              selected={selectedHobbies.includes(valueCount.value)}
+                                              onSelect={() => updateFilter("hobbies", valueCount.value)}
+                                />
+                            ))}
                     </div>
                 </div>
                 <div className="filter-section">
@@ -110,14 +121,15 @@ function FilterPanel({setQuery, query}: FilterPanelProps) {
                         <span>TOP 20</span>
                     </div>
                     <div className="filter-checkboxes">
-                        {filterOptions.nationalities.map(valueCount => (
-                            <FilterOption key={valueCount.value}
-                                          value={valueCount.value}
-                                          count={valueCount.count}
-                                          selected={selectedNationalities.includes(valueCount.value)}
-                                          onSelect={() => updateFilter("nationalities", valueCount.value)}
-                            />
-                        ))}
+                        {filterOptions.nationalities.toSorted(filterOptionSortingFunction)
+                            .map(valueCount => (
+                                <FilterOption key={valueCount.value}
+                                              value={valueCount.value}
+                                              count={valueCount.count}
+                                              selected={selectedNationalities.includes(valueCount.value)}
+                                              onSelect={() => updateFilter("nationalities", valueCount.value)}
+                                />
+                            ))}
                     </div>
                 </div>
             </div>
