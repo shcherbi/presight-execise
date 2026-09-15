@@ -1,5 +1,5 @@
 import "./FilterPanel.css"
-import {type Dispatch, type SetStateAction, useEffect, useState} from "react";
+import {type Dispatch, type SetStateAction, useEffect, useRef, useState} from "react";
 import {getFilterOptions} from "../../services/api.ts";
 import FilterOption from "../FilterOption/FilterOption.tsx";
 import type {FilterOptions, UserFilter, UserQuery, ValueCount} from "../../../../server/src/models/user.ts";
@@ -18,8 +18,34 @@ function FilterPanel({setQuery, query}: FilterPanelProps) {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string>();
     const [retryCount, setRetryCount] = useState(0);
+
     const selectedHobbies = query.hobbies ?? [];
     const selectedNationalities = query.nationalities ?? [];
+
+    const [isOpen, setIsOpen] = useState(false);
+    const toggleButtonRef = useRef<HTMLButtonElement>(null);
+    const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+    function closePanel(): void {
+        setIsOpen(false);
+        requestAnimationFrame(() => toggleButtonRef.current?.focus());
+    }
+
+    useEffect(() => {
+        if (!isOpen) {
+            return;
+        }
+
+        function closeOnEscape(event: KeyboardEvent): void {
+            if (event.key === "Escape") {
+                closePanel();
+            }
+        }
+
+        document.addEventListener("keydown", closeOnEscape);
+        closeButtonRef.current?.focus();
+        return () => document.removeEventListener("keydown", closeOnEscape);
+    }, [isOpen]);
 
     useEffect(() => {
         let isStale = false;
@@ -74,17 +100,30 @@ function FilterPanel({setQuery, query}: FilterPanelProps) {
     }
 
     return (
-        <aside className="filter-panel-container">
+        <>
+            <button ref={toggleButtonRef} className="filter-panel-toggle" type="button"
+                    aria-expanded={isOpen} aria-controls="filter-panel" onClick={() => setIsOpen(true)}>
+                <span className="filter-panel-toggle-icon" aria-hidden="true"><i/><i/><i/></span>
+                Filters
+            </button>
+            <button className={`filter-panel-backdrop${isOpen ? " is-open" : ""}`} type="button"
+                    aria-label="Close filters" onClick={closePanel}/>
+            <aside id="filter-panel" className={`filter-panel-container${isOpen ? " is-open" : ""}`}>
             <div className="filter-panel-title">
                 <h2>Refine Records</h2>
-                <button type="button" onClick={() => {
-                    setQuery(currentQuery => ({
-                        ...currentQuery,
-                        hobbies: [],
-                        nationalities: []
-                    }));
-                }}>Clear all
-                </button>
+                <div className="filter-panel-actions">
+                    <button type="button" onClick={() => {
+                        setQuery(currentQuery => ({
+                            ...currentQuery,
+                            hobbies: [],
+                            nationalities: []
+                        }));
+                    }}>Clear all
+                    </button>
+                    <button ref={closeButtonRef} className="filter-panel-close" type="button"
+                            aria-label="Close filters" onClick={closePanel}>Close
+                    </button>
+                </div>
             </div>
             <div className="filter-section-container">
                 {isLoading && !filterOptions.hobbies.length && !filterOptions.nationalities.length
@@ -133,7 +172,8 @@ function FilterPanel({setQuery, query}: FilterPanelProps) {
                     </div>
                 </div>
             </div>
-        </aside>
+            </aside>
+        </>
     );
 }
 

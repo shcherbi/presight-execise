@@ -34,6 +34,18 @@
     cursor: pointer;
 }
 
+.filter-panel-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.filter-panel-toggle,
+.filter-panel-backdrop,
+.filter-panel-close {
+    display: none;
+}
+
 .filter-panel-title h2 {
     font-size: 17px;
     font-weight: 500;
@@ -84,13 +96,77 @@
 }
 
 @media (max-width: 800px) {
+    .filter-panel-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        align-self: flex-start;
+        color: rgb(255, 248, 233);
+        background: rgb(24, 52, 65);
+        border: 1px solid rgb(155, 48, 44);
+        padding: 9px 12px;
+        font: 700 11px / 1 "Courier New", monospace;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+    }
+
+    .filter-panel-toggle-icon {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .filter-panel-toggle-icon i {
+        display: block;
+        width: 14px;
+        height: 1px;
+        background: currentColor;
+    }
+
+    .filter-panel-backdrop {
+        display: block;
+        position: fixed;
+        z-index: 10;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        visibility: hidden;
+        opacity: 0;
+        background: rgb(24 34 41 / 55%);
+        border: 0;
+        transition: opacity 200ms ease, visibility 0s linear 200ms;
+    }
+
+    .filter-panel-backdrop.is-open {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 200ms ease;
+    }
+
     .filter-panel-container {
-        flex: 0 0 auto;
-        max-height: 38vh;
+        position: fixed;
+        z-index: 11;
+        inset: 0 auto 0 0;
+        width: min(86vw, 360px);
+        min-width: 0;
+        height: 100dvh;
+        visibility: hidden;
+        transform: translateX(-100%);
+        transition: transform 200ms ease, visibility 0s linear 200ms;
+    }
+
+    .filter-panel-container.is-open {
+        visibility: visible;
+        transform: translateX(0);
+        transition: transform 200ms ease;
     }
 
     .filter-section-container {
         overflow-y: auto;
+    }
+
+    .filter-panel-close {
+        display: inline;
     }
 }
 
