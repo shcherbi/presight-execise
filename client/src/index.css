@@ -32,8 +32,3 @@ body {
     background-color: #e9e1d0;
     color: #182229;
 }
-
-.sherlock-image{
-    width: 100px;
-    filter: brightness(0) saturate(100%) invert(99%) sepia(97%) saturate(304%) hue-rotate(344deg) brightness(111%) contrast(102%);
-}
