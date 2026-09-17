@@ -13,8 +13,8 @@ function UserCard(user: User) {
                 </div>
                 <div className="hobby-row">
                     {
-                        user.hobbies.slice(0, 2).map((hobbie: string) => (
-                            <span key={hobbie}>{hobbie}</span>
+                        user.hobbies.slice(0, 2).map((hobby: string) => (
+                            <span key={hobby}>{hobby}</span>
                         ))
                     }
                     {user.hobbies.length > 2 ? (

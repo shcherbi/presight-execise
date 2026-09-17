@@ -30,11 +30,15 @@ const queryParams = {
 
 type UrlQuery = inferParserType<typeof queryParams>;
 
-function normalizeValues(values: string[]): string[] {
+function isNumeric(value: any) {
+    return !isNaN(value) && Number.isFinite(parseFloat(value));
+}
+
+function normalizeFilterValues(values: string[]): string[] {
     return [...new Set(
         values
             .map(value => value.trim())
-            .filter(value => value.length > 0 && value.length <= 100)
+            .filter(value => !isNumeric(value) && value.length > 0 && value.length <= 100)
     )].slice(0, 100);
 }
 
@@ -44,8 +48,8 @@ function toUserQuery(urlQuery: UrlQuery): UserQuery {
         page: 1,
         limit: 20,
         sortBy: {[urlQuery.sort]: urlQuery.direction},
-        hobbies: normalizeValues(urlQuery.hobby),
-        nationalities: normalizeValues(urlQuery.nationality)
+        hobbies: normalizeFilterValues(urlQuery.hobby),
+        nationalities: normalizeFilterValues(urlQuery.nationality)
     };
 
     if (name.length > 0 && name.length <= 200) {
@@ -81,8 +85,8 @@ export function useUserQuery(): {
                     direction:
                         updatedUserQuery.sortBy?.[updatedSortField]
                         ?? DEFAULT_SORT_DIRECTION,
-                    hobby: normalizeValues(updatedUserQuery.hobbies ?? []),
-                    nationality: normalizeValues(
+                    hobby: normalizeFilterValues(updatedUserQuery.hobbies ?? []),
+                    nationality: normalizeFilterValues(
                         updatedUserQuery.nationalities ?? []
                     )
                 };
