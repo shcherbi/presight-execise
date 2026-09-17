@@ -30,8 +30,8 @@ const queryParams = {
 
 type UrlQuery = inferParserType<typeof queryParams>;
 
-function isNumeric(value: any) {
-    return !isNaN(value) && Number.isFinite(parseFloat(value));
+function isNumeric(value: string) {
+    return !isNaN(Number(value)) && Number.isFinite(parseFloat(value));
 }
 
 function normalizeFilterValues(values: string[]): string[] {

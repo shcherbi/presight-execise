@@ -5,34 +5,35 @@ import FilterOption from "../FilterOption/FilterOption.tsx";
 import type {FilterOptions, UserFilter, UserQuery, ValueCount} from "../../../../server/src/models/user.ts";
 
 type FilterPanelProps = {
-    setQuery: Dispatch<SetStateAction<UserQuery>>,
-    query: UserQuery
+    query: UserQuery,
+    setQuery: Dispatch<SetStateAction<UserQuery>>
 };
 
 
-function FilterPanel({setQuery, query}: FilterPanelProps) {
+function FilterPanel({query, setQuery}: FilterPanelProps) {
     const [filterOptions, setFilterOptions] = useState<FilterOptions>({
         hobbies: [],
         nationalities: []
     });
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string>();
-    const [retryCount, setRetryCount] = useState(0);
 
     const selectedHobbies = query.hobbies ?? [];
     const selectedNationalities = query.nationalities ?? [];
 
-    const [isOpen, setIsOpen] = useState(false);
-    const toggleButtonRef = useRef<HTMLButtonElement>(null);
-    const closeButtonRef = useRef<HTMLButtonElement>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string>();
+    const [retryCount, setRetryCount] = useState(0);
+
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const openDrawerButtonRef = useRef<HTMLButtonElement>(null);
+    const closeDrawerButtonRef = useRef<HTMLButtonElement>(null);
 
     function closePanel(): void {
-        setIsOpen(false);
-        requestAnimationFrame(() => toggleButtonRef.current?.focus());
+        setIsDrawerOpen(false);
+        requestAnimationFrame(() => openDrawerButtonRef.current?.focus());
     }
 
     useEffect(() => {
-        if (!isOpen) {
+        if (!isDrawerOpen) {
             return;
         }
 
@@ -43,9 +44,9 @@ function FilterPanel({setQuery, query}: FilterPanelProps) {
         }
 
         document.addEventListener("keydown", closeOnEscape);
-        closeButtonRef.current?.focus();
+        closeDrawerButtonRef.current?.focus();
         return () => document.removeEventListener("keydown", closeOnEscape);
-    }, [isOpen]);
+    }, [isDrawerOpen]);
 
     useEffect(() => {
         let isStale = false;
@@ -87,28 +88,28 @@ function FilterPanel({setQuery, query}: FilterPanelProps) {
     }
 
     function updateFilter(filter: "hobbies" | "nationalities", filterValue: string): void {
-        setQuery(currentQuery => {
-            const currentFilterValues = currentQuery[filter] ?? [];
+        setQuery(prevQuery => {
+            const currentFilterValues = prevQuery[filter] ?? [];
             const nextFilterValues = currentFilterValues.includes(filterValue)
                 ? currentFilterValues.filter(currentValue => currentValue !== filterValue)
                 : [...currentFilterValues, filterValue];
 
             return filter === "hobbies"
-                ? {...currentQuery, hobbies: nextFilterValues}
-                : {...currentQuery, nationalities: nextFilterValues};
+                ? {...prevQuery, hobbies: nextFilterValues}
+                : {...prevQuery, nationalities: nextFilterValues};
         });
     }
 
     return (
         <>
-            <button ref={toggleButtonRef} className="filter-panel-toggle" type="button"
-                    aria-expanded={isOpen} aria-controls="filter-panel" onClick={() => setIsOpen(true)}>
+            <button ref={openDrawerButtonRef} className="filter-panel-toggle" type="button"
+                    aria-expanded={isDrawerOpen} aria-controls="filter-panel" onClick={() => setIsDrawerOpen(true)}>
                 <span className="filter-panel-toggle-icon" aria-hidden="true"><i/><i/><i/></span>
                 Filters
             </button>
-            <button className={`filter-panel-backdrop${isOpen ? " is-open" : ""}`} type="button"
+            <button className={`filter-panel-backdrop${isDrawerOpen ? " is-open" : ""}`} type="button"
                     aria-label="Close filters" onClick={closePanel}/>
-            <aside id="filter-panel" className={`filter-panel-container${isOpen ? " is-open" : ""}`}>
+            <aside id="filter-panel" className={`filter-panel-container${isDrawerOpen ? " is-open" : ""}`}>
             <div className="filter-panel-title">
                 <h2>Refine Records</h2>
                 <div className="filter-panel-actions">
@@ -120,7 +121,7 @@ function FilterPanel({setQuery, query}: FilterPanelProps) {
                         }));
                     }}>Clear all
                     </button>
-                    <button ref={closeButtonRef} className="filter-panel-close" type="button"
+                    <button ref={closeDrawerButtonRef} className="filter-panel-close" type="button"
                             aria-label="Close filters" onClick={closePanel}>Close
                     </button>
                 </div>

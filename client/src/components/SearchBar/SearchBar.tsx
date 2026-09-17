@@ -14,7 +14,8 @@ type SearchBarProps = {
 
 function SearchBar({setQuery, query}: SearchBarProps) {
     const [searchValue, setSearchValue] = useState(query.name ?? "");
-    const sortKey: SortField = SORT_FIELDS.find(field => query.sortBy?.[field] !== undefined) ?? "firstName";
+    const sortKey: SortField = SORT_FIELDS.find((field: SortField) =>
+        query.sortBy?.[field] !== undefined) ?? "firstName";
     const sortDirection: SortBy = query.sortBy?.[sortKey] ?? SORT_BY.ASC;
 
     useEffect(() => {
