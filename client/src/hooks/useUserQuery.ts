@@ -67,12 +67,12 @@ export function useUserQuery(): {
 
     const setQuery = useCallback<Dispatch<SetStateAction<UserQuery>>>(
         queryUpdate => {
-            void setUrlQuery(currentUrlState => {
-                const currentUserQuery = toUserQuery(currentUrlState);
+            void setUrlQuery(prevUrlState => {
+                const prevUserQuery = toUserQuery(prevUrlState);
 
                 // Either object or updater function can be passed
                 const updatedUserQuery: UserQuery = typeof queryUpdate === "function"
-                    ? queryUpdate(currentUserQuery)
+                    ? queryUpdate(prevUserQuery)
                     : queryUpdate;
 
                 const updatedSortField: SortField =
